@@ -9,13 +9,18 @@ Clone this package in the `src` folder of your ROS 2 workspace. Check for missin
 ```
 rosdep install -i --from-path src --rosdistro humble -y
 ```
-Build your new package
+Build your new packages
 ```
-colcon build --packages-select ros2_kdl_package
+colcon build 
 ```
 Source the setup files
 ```
 . install/setup.bash
+```
+Set IGN_GAZEBO_RESOURCE_PATH to make Gazebo able to find models
+```
+export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:/home/user/ros2_ws/src/Homework_2_Gioacchino_Razzino/ros2_iiwa/iiwa_description/gazebo/models
+
 ```
 
 ## :white_check_mark: Usage Homework-Point-1
