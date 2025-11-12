@@ -21,24 +21,8 @@ from launch.substitutions import Command, FindExecutable, LaunchConfiguration, P
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration
+from launch.actions import TimerAction
 
-
-    # Rotazione: 90° Y, 90° X -> in radianti pi/2
-static_tf = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='camera_to_optical',
-        output='screen',
-        arguments=[
-            '0', '0', '0',  # xyz
-            '1.5708', '0', '-1.5708',  # rpy: roll X, pitch Y, yaw Z
-            'camera_link',  # parent frame
-            'camera_optical_frame'  # child frame
-        ]
-    )
 
 aruco_node = Node(
     package='aruco_ros',
@@ -48,10 +32,10 @@ aruco_node = Node(
     parameters=[{
         'marker_id': 5,
         'marker_size': 0.1,
-        'reference_frame': 'camera_optical_frame',
+        'reference_frame': 'camera_link',
         'marker_frame': 'aruco_marker',
-        'camera_frame': 'camera_optical_frame',
-        'aruco_dictionary_id': 3
+        'camera_frame': 'camera_link',
+        #'aruco_dictionary_id': 3
     }],
     remappings=[
         ('/image', '/camera'),
@@ -446,7 +430,6 @@ def generate_launch_description():
         delay_rviz_after_joint_state_broadcaster_spawner,
         external_torque_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
-        static_tf,
         aruco_node,
         bridge_camera,
     ]
